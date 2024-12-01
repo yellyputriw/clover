@@ -24,7 +24,7 @@ import { AxiosError } from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPageWithLayout } from './_app';
 
 type ErrorResponse = {
@@ -43,12 +43,13 @@ const Home: NextPageWithLayout = () => {
   const [limit, setLimit] = useState(15);
   const [searchQuery, setSearchQuery] = useState('');
   const [inputEmail, setInputEmail] = useState('');
+  const [token, setToken] = useState('');
 
   const [user] = useLocalStorageState<UserState>('user', {
     listenStorageChange: true,
   });
 
-  const { data, error, isFetching } = useGetPosts(user?.token, currentPage, limit, searchQuery);
+  const { data, error, isFetching } = useGetPosts(token, currentPage, limit, searchQuery);
 
   const errorMessage = error
     ? (error as AxiosError<ErrorResponse>).response?.data.data.message
@@ -63,6 +64,12 @@ const Home: NextPageWithLayout = () => {
   const handlePagination: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    if (user) {
+      setToken(user?.token);
+    }
+  }, [user]);
 
   return (
     <React.Fragment>
@@ -187,7 +194,7 @@ const Home: NextPageWithLayout = () => {
                   defaultCurrent={currentPage}
                 />
               </div>
-              {user && (
+              {token && (
                 <Tooltip placement="left" title="Create New Post">
                   <FloatButton
                     icon={<PlusOutlined />}
