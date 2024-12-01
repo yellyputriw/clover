@@ -54,8 +54,13 @@ const Layout = ({ children, title }: LayoutProps) => {
         open={isModalOpen}
         title="Welcome to Clover"
         centered
-        closable={mode === 'edit'}
-        onCancel={() => setIsModalOpen(false)}
+        {...(mode === 'edit' && {
+          closable: true,
+          onCancel: () => {
+            setIsModalOpen(false);
+            setMode('create');
+          },
+        })}
         destroyOnClose
         footer={(_, __) => (
           <Button type="primary" htmlType="submit" loading={confirmLoading}>
