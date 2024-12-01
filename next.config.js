@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['picsum.photos'],
   },
+  transpilePackages: ['ahooks'],
 };
 
 module.exports = nextConfig;

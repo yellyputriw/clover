@@ -6,7 +6,7 @@ describe('Home Page', () => {
     const { getByRole } = render(<Home />);
 
     const headingElement = getByRole('heading', {
-      name: /Welcome to Next.js/i,
+      name: /The Journal: Design Resources, Interviews and Industry News/i,
     });
 
     expect(headingElement).toBeInTheDocument();

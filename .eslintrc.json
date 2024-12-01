@@ -46,9 +46,11 @@
     "react/function-component-definition": [
       "error",
       {
-        "namedComponents": "function-declaration"
+        "namedComponents": "arrow-function"
       }
     ],
+    "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],

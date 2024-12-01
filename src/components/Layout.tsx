@@ -1,8 +1,12 @@
+/* eslint-disable react/no-unstable-nested-components */
 import delay from '@/utils/delay';
+import { useLocalStorageState } from 'ahooks';
 import { Button, Form, Input, message, Modal } from 'antd';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
+
+type UserState = { name: string; token: string };
 
 type LayoutProps = {
   title?: string;
@@ -12,19 +16,22 @@ type LayoutProps = {
 const Layout = ({ children, title }: LayoutProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [userName, setUserName] = useState('');
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
+  const [mode, setMode] = useState('create');
+  const [userName, setUserName] = useState('Guest');
+
+  const [user, setUser] = useLocalStorageState<UserState>('user', {
+    listenStorageChange: true,
+  });
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
     if (!user) {
       setIsModalOpen(true);
     } else {
-      const data = JSON.parse(user);
-      setUserName(data.name);
+      setUserName(user.name);
     }
-  }, []);
+  }, [user]);
 
   return (
     <React.Fragment>
@@ -35,13 +42,20 @@ const Layout = ({ children, title }: LayoutProps) => {
         <link rel="icon" href="/logo.png" />
       </Head>
       {contextHolder}
-      <Header userName={userName} />
+      <Header
+        userName={userName}
+        onClick={() => {
+          setMode('edit');
+          setIsModalOpen(true);
+        }}
+      />
       <main>{children}</main>
       <Modal
         open={isModalOpen}
         title="Welcome to Clover"
         centered
-        closable={false}
+        closable={mode === 'edit'}
+        onCancel={() => setIsModalOpen(false)}
         destroyOnClose
         footer={(_, __) => (
           <Button type="primary" htmlType="submit" loading={confirmLoading}>
@@ -53,21 +67,20 @@ const Layout = ({ children, title }: LayoutProps) => {
           <Form
             form={form}
             layout="vertical"
-            name="form_in_modal"
-            clearOnDestroy
+            {...(mode === 'edit' && { initialValues: user })}
             onFinish={async (data) => {
               setConfirmLoading(true);
-              await delay(1500);
-
-              localStorage.setItem('user', JSON.stringify(data));
-              setUserName(data.name);
-
-              setConfirmLoading(false);
-              setIsModalOpen(false);
-              messageApi.open({
-                type: 'success',
-                content: 'Data Saved!',
-              });
+              try {
+                await delay(1500);
+                setUser(data);
+                messageApi.open({
+                  type: 'success',
+                  content: 'Data Saved!',
+                });
+              } finally {
+                setConfirmLoading(false);
+                setIsModalOpen(false);
+              }
             }}
           >
             {dom}

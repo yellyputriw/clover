@@ -1,8 +1,9 @@
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import React from 'react';
 
-function MyDocument() {
+const MyDocument = () => {
   return (
     <Html lang="en">
       <Head />
@@ -12,7 +13,7 @@ function MyDocument() {
       </body>
     </Html>
   );
-}
+};
 
 MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   const cache = createCache();
@@ -31,10 +32,11 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   return {
     ...initialProps,
     styles: (
-      <>
+      <React.Fragment>
         {initialProps.styles}
+        {/* eslint-disable-next-line react/no-danger */}
         <style dangerouslySetInnerHTML={{ __html: style }} />
-      </>
+      </React.Fragment>
     ),
   };
 };

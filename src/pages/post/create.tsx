@@ -24,7 +24,7 @@ const CreatePost: NextPageWithLayout = () => {
   }, [users?.data]);
 
   return (
-    <div className="mx-auto max-w-screen-md px-10 py-6 lg:px-0">
+    <div className="mx-auto max-w-screen-md px-4 py-6 md:px-10 lg:px-0">
       <Link href="/" className="hover:text-blue-500">
         <ArrowLeftOutlined className="mr-2" />
         <span>Back</span>
@@ -45,6 +45,7 @@ const CreatePost: NextPageWithLayout = () => {
               router.push('/');
             } catch (err) {
               if (err instanceof AxiosError) {
+                // eslint-disable-next-line no-alert
                 alert(err.response?.data.data.message);
               }
             }

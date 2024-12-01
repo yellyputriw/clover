@@ -15,7 +15,7 @@ const EditPost: NextPageWithLayout = () => {
   const { mutateAsync: updatePostAsync } = useUpdatePost();
 
   return (
-    <div className="mx-auto max-w-screen-md px-10 py-6 lg:px-0">
+    <div className="mx-auto max-w-screen-md px-4 py-6 md:px-10 lg:px-0">
       <Link href={`/post/${postId}`} className="hover:text-blue-500">
         <ArrowLeftOutlined className="mr-2" />
         <span>Back</span>
@@ -26,7 +26,6 @@ const EditPost: NextPageWithLayout = () => {
       <div className="rounded-md border-2 border-dashed border-gray-300 bg-white p-6">
         <Form
           form={form}
-          name="validateOnly"
           className="flex flex-col gap-4"
           layout="vertical"
           autoComplete="off"
@@ -41,6 +40,7 @@ const EditPost: NextPageWithLayout = () => {
               router.push('/');
             } catch (err) {
               if (err instanceof AxiosError) {
+                // eslint-disable-next-line no-alert
                 alert(err.response?.data.data.message);
               }
             }

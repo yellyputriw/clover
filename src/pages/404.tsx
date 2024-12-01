@@ -2,7 +2,7 @@ import { Button, Result } from 'antd';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-export default function NotFound() {
+const NotFound = () => {
   const router = useRouter();
 
   return (
@@ -19,4 +19,6 @@ export default function NotFound() {
       />
     </div>
   );
-}
+};
+
+export default NotFound;

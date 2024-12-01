@@ -3,19 +3,22 @@ import { getToken } from '@/utils/getToken';
 import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from './api';
 
+type Token = string | undefined;
+
 async function getPosts(
-  context: QueryFunctionContext<[string, number, number, string | undefined, string | null]>
+  context: QueryFunctionContext<[string, Token, number, number, string | undefined]>
 ) {
   const { queryKey } = context;
-  const [, page, limit, title, token] = queryKey;
-  // const token = getToken();
+  const [, token, page, limit, title] = queryKey;
   const result = await api.get<APIResponse<Post[]>>('/posts', {
     params: {
-      page: page,
+      page,
       per_page: limit,
       title,
     },
-    headers: { Authorization: `Bearer ${token}` },
+    ...(token && {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
   });
   return result.data;
 }
@@ -51,10 +54,12 @@ function deletePost(id: string) {
   return api.delete(`/posts/${id}`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
-export function useGetPosts(page = 1, limit = 10, title?: string, token = '') {
+export function useGetPosts(token?: string, page = 1, limit = 10, title?: string) {
   const query = useQuery({
-    queryKey: ['posts', page, limit, title, token],
+    queryKey: ['posts', token, page, limit, title],
     queryFn: getPosts,
+    enabled: !!token,
+    retry: 1,
   });
   return query;
 }

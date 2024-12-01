@@ -1,5 +1,7 @@
 # Clover
 
+https://clover-chi.vercel.app
+
 ## Prerequisite
 
 - [Node.js](https://nodejs.org/) v16.20.0 or higher
@@ -10,6 +12,12 @@ Install dependencies
 
 ```sh
 npm i
+```
+
+## Environment Variables
+
+```sh
+cp .env.example .env.local
 ```
 
 ## Run Project Locally
@@ -27,14 +35,6 @@ Server running at http://localhost:3000
 ```sh
 npm run lint
 ```
-
-## Run Unit Test
-
-```sh
-npm run test
-```
-
-Running test in watch mode `npm run test --watch`
 
 ## Build
 

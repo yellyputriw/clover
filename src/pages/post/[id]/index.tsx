@@ -17,7 +17,7 @@ const PostDetail: NextPageWithLayout = () => {
   const { mutateAsync: deletePostAsync } = useDeletePost();
 
   return (
-    <div className="mx-auto max-w-screen-lg px-10 py-6 lg:px-0">
+    <div className="mx-auto max-w-screen-lg px-4 py-6 md:px-10 lg:px-0">
       <div className="mb-6 flex items-center justify-between">
         <Link href="/" className="hover:text-blue-500">
           <ArrowLeftOutlined className="mr-2" />
@@ -37,17 +37,19 @@ const PostDetail: NextPageWithLayout = () => {
           </Button>
           <Popconfirm
             placement="bottom"
-            title={'Are you sure to delete this post?'}
-            description={'Delete the post'}
+            title="Are you sure to delete this post?"
+            description="Delete the post"
             okText="Yes"
             cancelText="No"
             onConfirm={async () => {
               try {
                 await deletePostAsync(postId);
+                // eslint-disable-next-line no-alert
                 alert(`Success delete post ${router.query.id}`);
                 router.push('/');
               } catch (err) {
                 if (err instanceof AxiosError) {
+                  // eslint-disable-next-line no-alert
                   alert(err.response?.data.data.message);
                 }
               }
