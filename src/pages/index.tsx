@@ -187,16 +187,18 @@ const Home: NextPageWithLayout = () => {
                   defaultCurrent={currentPage}
                 />
               </div>
-              <Tooltip placement="left" title="Create New Post">
-                <FloatButton
-                  icon={<PlusOutlined />}
-                  type="primary"
-                  style={{ insetInlineEnd: 32, insetBlockEnd: 64 }}
-                  onClick={() => {
-                    router.push('/post/create');
-                  }}
-                />
-              </Tooltip>
+              {user && (
+                <Tooltip placement="left" title="Create New Post">
+                  <FloatButton
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    style={{ insetInlineEnd: 32, insetBlockEnd: 64 }}
+                    onClick={() => {
+                      router.push('/post/create');
+                    }}
+                  />
+                </Tooltip>
+              )}
             </React.Fragment>
           )}
         </div>
