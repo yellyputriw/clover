@@ -52,7 +52,7 @@ const Home: NextPageWithLayout = () => {
   const { data, error, isFetching } = useGetPosts(token, currentPage, limit, searchQuery);
 
   const errorMessage = error
-    ? (error as AxiosError<ErrorResponse>).response?.data.data.message
+    ? (error as AxiosError<ErrorResponse>).response?.data?.data?.message
     : '';
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -142,7 +142,7 @@ const Home: NextPageWithLayout = () => {
         </div>
         <div>
           {isFetching ? (
-            <div className="x-auto mb-12 grid max-w-7xl grid-cols-1 gap-4 px-10 md:grid-cols-2 lg:grid-cols-3 xl:px-0">
+            <div className="mx-auto mb-12 grid max-w-7xl grid-cols-1 gap-4 px-10 md:grid-cols-2 lg:grid-cols-3 xl:px-0">
               {new Array(9).fill('').map((_, i) => (
                 <div key={i} className="rounded-md p-4 shadow-md">
                   <Skeleton active={isFetching} />
